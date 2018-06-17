@@ -1,0 +1,66 @@
+version: '3' 
+
+services:
+  mysql-database:
+    container_name: mysql-database
+    build:
+      context: ./mysql-database
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=adidas
+      - MYSQL_USER=sa
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3306:3306"
+
+  eureka-service: 
+    container_name: eureka-service
+    build:
+      context: ./eureka-service
+      dockerfile: Dockerfile
+    ports:
+      - "8300:8300"
+       
+  subscription-service: 
+    container_name: subscription-service 
+    build:  
+      context: ./subscription-service 
+      dockerfile: Dockerfile
+    ports: 
+      - "8301:8301" 
+    depends_on: 
+      - mysql-database 
+      - eureka-service
+
+  event-service: 
+    container_name: event-service 
+    build:  
+      context: ./event-service 
+      dockerfile: Dockerfile
+    ports: 
+      - "8302:8302" 
+    depends_on: 
+      - eureka-service
+
+  email-service: 
+    container_name: email-service 
+    build:  
+      context: ./email-service 
+      dockerfile: Dockerfile
+    ports: 
+      - "8303:8303" 
+    depends_on:
+      - eureka-service
+  
+  security-service: 
+    container_name: security-service
+    build:
+      context: ./security-service
+      dockerfile: Dockerfile
+    ports:
+      - "8304:8304"
+    depends_on:
+      - eureka-service
+            
+
