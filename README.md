@@ -52,7 +52,7 @@ docker-compose build
 
 From the same parent folder, run the containers with docker-compose:
 ```
-docker-compose run -d
+docker-compose up -d
 ```
 
 Check all containers are up and running:
